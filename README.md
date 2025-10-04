@@ -1,36 +1,286 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pokémon Search App
 
-## Getting Started
+A production-ready Pokémon search application built with Next.js 14+, TypeScript, and modern React patterns. This app demonstrates clean architecture, functional programming principles, and atomic design patterns.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Real-time Pokémon Search**: Search for any Pokémon by name with debounced input
+- **Detailed Stats Display**: View comprehensive Pokémon statistics with visual bars
+- **Type System**: Color-coded type badges for easy identification
+- **Responsive Design**: Mobile-first design with Tailwind CSS
+- **Error Handling**: Graceful error states with user-friendly messages
+- **Loading States**: Skeleton loading components for better UX
+- **Modern Architecture**: Atomic design pattern with SOLID principles
+
+## 🛠 Tech Stack
+
+- **Framework**: Next.js 14+ (App Router, TypeScript)
+- **Styling**: Tailwind CSS + shadcn/ui components
+- **State Management**: React Query (TanStack Query)
+- **Architecture**: Atomic Design Pattern
+- **API**: PokéAPI with custom middleware
+
+## 📁 Project Structure
+
+```
+src/
+├── app/
+│   ├── api/
+│   │   └── pokemon/
+│   │       └── route.ts          # API route with HOF middleware
+│   ├── page.tsx                  # Main page
+│   └── layout.tsx               # Root layout with providers
+├── components/
+│   ├── atoms/                   # Basic building blocks
+│   │   ├── TypeBadge.tsx
+│   │   └── StatBar.tsx
+│   ├── molecules/               # Simple component groups
+│   │   ├── SearchBar.tsx
+│   │   └── PokemonCard.tsx
+│   ├── organisms/               # Complex component groups
+│   │   └── SearchHeader.tsx
+│   └── templates/               # Page-level components
+│       └── SearchPageTemplate.tsx
+├── api/
+│   └── queries/
+│       └── usePokemonSearch.ts  # React Query hooks
+├── lib/
+│   ├── hofs/                    # Higher-Order Functions
+│   │   ├── withErrorHandler.ts
+│   │   ├── withLogger.ts
+│   │   ├── withBaseUrl.ts
+│   │   └── withMiddleware.ts
+│   ├── utils/
+│   │   └── transformers.ts      # Functional transformations
+│   └── providers.tsx            # React Query provider
+└── types/
+    └── index.ts                 # TypeScript definitions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏗 Architecture Decisions
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Higher-Order Functions (HOFs)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application uses several HOFs to enhance functionality and maintain clean separation of concerns:
 
-## Learn More
+#### 1. `withErrorHandler`
 
-To learn more about Next.js, take a look at the following resources:
+- **Purpose**: Transforms API errors into user-friendly messages
+- **Benefits**: Centralized error handling, consistent user experience
+- **Usage**: Wraps API calls to provide meaningful error messages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### 2. `withLogger`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Purpose**: Logs requests and responses for debugging
+- **Benefits**: Development debugging, performance monitoring
+- **Usage**: Tracks API call duration and success/failure states
 
-## Deploy on Vercel
+#### 3. `withBaseUrl`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Purpose**: Injects consistent API base URL
+- **Benefits**: Environment flexibility, URL consistency
+- **Usage**: Ensures all API calls use the correct base URL
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+#### 4. `withMiddleware`
+
+- **Purpose**: Composes multiple HOFs together
+- **Benefits**: Reusable middleware chains, clean composition
+- **Usage**: Combines error handling, logging, and URL injection
+
+### Data Transformation Strategy
+
+The app uses functional programming principles with `map`, `filter`, and `reduce`:
+
+```typescript
+// Map: Transform data structure
+const mappedData = {
+  displayName:
+    rawPokemon.name.charAt(0).toUpperCase() + rawPokemon.name.slice(1),
+  types: rawPokemon.types.map(type => type.type.name),
+  // ...
+};
+
+// Reduce: Calculate aggregated values
+const totalStats = Object.values(mappedData.stats).reduce(
+  (sum, stat) => sum + stat,
+  0
+);
+
+// Filter: Remove unwanted data
+const filteredPokemon = pokemon.filter(p =>
+  p.types.includes(type.toLowerCase())
+);
+```
+
+### State Management Approach
+
+- **React Query**: Handles all server state with caching, background updates, and error handling
+- **Local State**: React hooks for UI state (search input, loading states)
+- **No Global State**: Avoids unnecessary complexity for this use case
+
+### Design Pattern Rationale
+
+#### Atomic Design Pattern
+
+- **Atoms**: Reusable UI elements (TypeBadge, StatBar)
+- **Molecules**: Simple component combinations (SearchBar, PokemonCard)
+- **Organisms**: Complex UI sections (SearchHeader)
+- **Templates**: Page-level layouts (SearchPageTemplate)
+
+#### SOLID Principles
+
+- **Single Responsibility**: Each component/function has one clear purpose
+- **Open/Closed**: Components are extensible without modification
+- **Dependency Inversion**: Components depend on abstractions (HOFs, interfaces)
+- **DRY**: Reusable logic extracted into utilities and HOFs
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd pokemon-app
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## 🔧 Configuration
+
+### Environment Variables
+
+No environment variables are required for basic functionality. The app uses PokéAPI's public endpoint.
+
+### Customization
+
+- **PokéAPI Base URL**: Modify `POKEAPI_BASE_URL` in `/src/app/api/pokemon/route.ts`
+- **Styling**: Update Tailwind classes or shadcn/ui components
+- **HOFs**: Add new middleware functions in `/src/lib/hofs/`
+
+## 📊 API Integration
+
+The app uses a custom API route (`/api/pokemon`) that:
+
+1. **Proxies PokéAPI requests** with error handling
+2. **Applies HOF middleware** for logging and error transformation
+3. **Transforms data** using functional programming patterns
+4. **Returns consistent responses** with proper TypeScript types
+
+### Example API Response
+
+```typescript
+{
+  data: {
+    id: 25,
+    name: "pikachu",
+    displayName: "Pikachu",
+    height: "0.4m",
+    weight: "6kg",
+    image: "https://...",
+    types: ["electric"],
+    stats: {
+      hp: 35,
+      attack: 55,
+      defense: 40,
+      speed: 90,
+      specialAttack: 50,
+      specialDefense: 50
+    },
+    totalStats: 320
+  },
+  success: true
+}
+```
+
+## 🎨 UI Components
+
+### shadcn/ui Integration
+
+The app uses shadcn/ui components for consistent design:
+
+- **Button**: Interactive elements
+- **Input**: Search input with icons
+- **Card**: Pokémon information display
+- **Badge**: Type indicators
+- **Skeleton**: Loading states
+
+### Responsive Design
+
+- **Mobile-first**: Optimized for mobile devices
+- **Flexible layouts**: Adapts to different screen sizes
+- **Touch-friendly**: Appropriate touch targets and spacing
+
+## 🧪 Testing
+
+While not implemented in this version, the architecture supports easy testing:
+
+- **HOFs**: Pure functions that can be unit tested
+- **Transformers**: Functional utilities with predictable inputs/outputs
+- **Components**: Isolated components with clear interfaces
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+1. Push code to GitHub
+2. Connect repository to Vercel
+3. Deploy automatically
+
+### Other Platforms
+
+The app is a standard Next.js application and can be deployed to:
+
+- Netlify
+- AWS Amplify
+- Railway
+- Any Node.js hosting platform
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes following the established patterns
+4. Add tests if applicable
+5. Submit a pull request
+
+## 📝 License
+
+This project is licensed under the MIT License.
+
+## 🙏 Acknowledgments
+
+- [PokéAPI](https://pokeapi.co/) for providing the Pokémon data
+- [shadcn/ui](https://ui.shadcn.com/) for the component library
+- [TanStack Query](https://tanstack.com/query) for state management
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+
+---
+
+Built with ❤️ using modern React patterns and clean architecture principles.
