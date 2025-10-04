@@ -20,13 +20,13 @@ export function SearchBar({
 }: SearchBarProps) {
   const [query, setQuery] = useState("");
 
-  // Debounce search input
+  // Debounce search input (2 seconds)
   useEffect(() => {
     const timer = setTimeout(() => {
       if (query.trim()) {
         onSearch(query.trim());
       }
-    }, 300);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [query, onSearch]);
