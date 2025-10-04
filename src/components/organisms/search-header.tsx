@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AlertCircle, Search } from "lucide-react";
 import { SearchBar, PokemonCard } from "@/components/molecules";
-import { usePokemonSearch } from "@/api/pokemon";
+import { usePokemonSearch } from "@/app/api/pokemon/use-pokemon-search";
 
 /**
  * Organism: SearchHeader - Header with search functionality
