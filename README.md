@@ -27,34 +27,48 @@ src/
 ├── app/
 │   ├── api/
 │   │   └── pokemon/
-│   │       └── route.ts          # API route with HOF middleware
-│   ├── page.tsx                  # Main page
-│   └── layout.tsx               # Root layout with providers
+│   │       ├── route.ts              # API route with HOF middleware
+│   │       └── use-pokemon-search.ts # React Query hooks
+│   ├── page.tsx                      # Main page
+│   ├── layout.tsx                    # Root layout with providers
+│   ├── globals.css                   # Global styles
+│   └── favicon.ico                   # App favicon
 ├── components/
-│   ├── atoms/                   # Basic building blocks
-│   │   ├── TypeBadge.tsx
-│   │   └── StatBar.tsx
-│   ├── molecules/               # Simple component groups
-│   │   ├── SearchBar.tsx
-│   │   └── PokemonCard.tsx
-│   ├── organisms/               # Complex component groups
-│   │   └── SearchHeader.tsx
-│   └── templates/               # Page-level components
-│       └── SearchPageTemplate.tsx
-├── api/
-│   └── queries/
-│       └── usePokemonSearch.ts  # React Query hooks
+│   ├── atoms/                        # Basic building blocks
+│   │   ├── type-badge.tsx
+│   │   ├── stat-bar.tsx
+│   │   └── index.ts
+│   ├── molecules/                    # Simple component groups
+│   │   ├── search-bar.tsx
+│   │   ├── pokemon-card.tsx
+│   │   └── index.ts
+│   ├── organisms/                    # Complex component groups
+│   │   ├── search-header.tsx
+│   │   └── index.ts
+│   ├── templates/                    # Page-level components
+│   │   ├── search-page-template.tsx
+│   │   └── index.ts
+│   └── ui/                           # shadcn/ui components
+│       ├── badge.tsx
+│       ├── button.tsx
+│       ├── card.tsx
+│       ├── input.tsx
+│       ├── skeleton.tsx
+│       └── index.ts
 ├── lib/
-│   ├── hofs/                    # Higher-Order Functions
-│   │   ├── withErrorHandler.ts
-│   │   ├── withLogger.ts
-│   │   ├── withBaseUrl.ts
-│   │   └── withMiddleware.ts
+│   ├── hofs/                         # Higher-Order Functions
+│   │   ├── with-error-handler.ts
+│   │   ├── with-logger.ts
+│   │   ├── with-base-url.ts
+│   │   ├── with-middleware.ts
+│   │   └── index.ts
 │   ├── utils/
-│   │   └── transformers.ts      # Functional transformations
-│   └── providers.tsx            # React Query provider
+│   │   ├── transformers.ts            # Functional transformations
+│   │   ├── cn.ts                     # Class name utility
+│   │   └── index.ts
+│   └── providers.tsx                 # React Query provider
 └── types/
-    └── index.ts                 # TypeScript definitions
+    └── index.ts                      # TypeScript definitions
 ```
 
 ## 🏗 Architecture Decisions
@@ -158,8 +172,8 @@ const filteredPokemon = pokemon.filter(p =>
 
 3. **Run the development server**
 
-   ```bash
-   npm run dev
+```bash
+npm run dev
    ```
 
 4. **Open your browser**
@@ -171,6 +185,8 @@ const filteredPokemon = pokemon.filter(p =>
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
+- `npm run format` - Format code with Prettier
+- `npm run format:check` - Check code formatting without changes
 
 ## 🔧 Configuration
 
@@ -180,18 +196,20 @@ No environment variables are required for basic functionality. The app uses Pok�
 
 ### Customization
 
-- **PokéAPI Base URL**: Modify `POKEAPI_BASE_URL` in `/src/app/api/pokemon/route.ts`
+- **PokéAPI Base URL**: Modify `POKEAPI_BASE_URL` in `src/app/api/pokemon/route.ts`
 - **Styling**: Update Tailwind classes or shadcn/ui components
 - **HOFs**: Add new middleware functions in `/src/lib/hofs/`
 
 ## 📊 API Integration
 
-The app uses a custom API route (`/api/pokemon`) that:
+The app uses a custom API route (`/api/pokemon`) located in `src/app/api/pokemon/route.ts` that:
 
 1. **Proxies PokéAPI requests** with error handling
 2. **Applies HOF middleware** for logging and error transformation
 3. **Transforms data** using functional programming patterns
 4. **Returns consistent responses** with proper TypeScript types
+
+React Query hooks are located in `src/app/api/pokemon/use-pokemon-search.ts` for data fetching.
 
 ### Example API Response
 
