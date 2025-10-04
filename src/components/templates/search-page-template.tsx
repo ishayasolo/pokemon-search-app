@@ -1,4 +1,4 @@
-import { SearchHeader } from "@/components/organisms/search-header";
+import { SearchHeader } from "@/components/organisms";
 
 /**
  * Template: SearchPageTemplate - Main page layout for Pokémon search
