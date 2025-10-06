@@ -11,6 +11,7 @@ A production-ready Pokémon search application built with Next.js 14+, TypeScrip
 - **Error Handling**: Graceful error states with user-friendly messages
 - **Loading States**: Skeleton loading components for better UX
 - **Modern Architecture**: Atomic design pattern with SOLID principles
+- **Comprehensive Testing**: Unit tests for core HOFs and utilities
 
 ## 🛠 Tech Stack
 
@@ -187,6 +188,56 @@ npm run dev
 - `npm run lint` - Run ESLint
 - `npm run format` - Format code with Prettier
 - `npm run format:check` - Check code formatting without changes
+- `npm run test` - Run tests in watch mode
+- `npm run test:run` - Run tests once
+- `npm run test:ui` - Run tests with UI
+- `npm run test:coverage` - Run tests with coverage report
+
+## 🧪 Testing
+
+The project includes comprehensive unit tests for core functionality:
+
+### Test Coverage
+
+- **Higher-Order Functions**: All HOFs are fully tested (27 tests)
+- **Data Transformations**: All utility functions are tested (14 tests)
+- **Utility Functions**: Core utilities are tested (8 tests)
+- **Total**: 49 tests covering critical application logic
+
+### Test Framework
+
+- **Vitest**: Fast, modern testing framework
+- **jsdom**: DOM environment for testing
+- **Mocking**: Comprehensive mock support for API calls
+
+### Running Tests
+
+```bash
+# Run all tests
+npm run test:run
+
+# Run tests in watch mode
+npm run test
+
+# Run tests with UI
+npm run test:ui
+
+# Generate coverage report
+npm run test:coverage
+```
+
+### Test Structure
+
+```
+src/
+├── lib/
+│   ├── hofs/__tests__/          # HOF unit tests
+│   └── utils/__tests__/          # Utility function tests
+└── test/
+    └── setup.ts                  # Test configuration
+```
+
+For detailed testing documentation, see [TESTING.md](./TESTING.md).
 
 ## 🔧 Configuration
 
